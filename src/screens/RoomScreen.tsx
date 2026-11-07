@@ -449,6 +449,7 @@ export function RoomScreen({ route, navigation }: Screen<'Room'>) {
       key={attempt}
       wsUrl={session.credentials.wsUrl}
       token={session.credentials.token}
+      metadata={{ name: me.name, avatar: me.avatar, frame: me.frame }}
       callService={{ title: session.room.title, text: 'Tap to return to the room', leaveLabel: 'Leave' }}
       onError={(err) => {
         if (__DEV__) console.warn('[voltkit]', err.message);

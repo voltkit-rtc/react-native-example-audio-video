@@ -7,7 +7,6 @@ What changes between running this on your desk and shipping it.
 - [ ] `EXPO_PUBLIC_API_URL` points at your https backend
 - [ ] Your own app name, icon and Android package
 - [ ] Your own release signing key, backed up
-- [ ] Debug logging off in release builds
 - [ ] Tested on a real phone with two people
 - [ ] Foreground service types declared in Play Console
 - [ ] Report and block available wherever strangers meet
@@ -82,30 +81,6 @@ Check what you built:
 apksigner verify --print-certs app-release.apk   # your key, not the debug key
 zipalign -c -P 16 -v 4 app-release.apk           # Google Play requires 16 KB page support
 ```
-
-## Turn off debug logging
-
-`react-native-webrtc` turns on its debug logging as it loads, in release builds too, so every WebRTC operation is logged. This app switches it off
-in two parts.
-
-In [`index.ts`](../index.ts):
-
-```ts
-import debug from 'debug';
-
-if (!__DEV__) debug.disable();
-```
-
-In [`package.json`](../package.json), so that `react-native-webrtc` uses the same copy of `debug`:
-
-```json
-"overrides": {
-  "react-native-webrtc": { "debug": "$debug" }
-}
-```
-
-**Why both:** `react-native-webrtc` has its own private copy of `debug`. Disabling your copy does nothing unless they are the same one. In this app, that
-took joining a room from 31 log lines to none.
 
 ## Keep calls alive in the background
 

@@ -4,16 +4,6 @@ Things that are easy to get wrong, found while building this app. Look here firs
 
 ## SDK behaviour
 
-### There is no `client.identity`
-
-The Kotlin examples in VoltKit's guides use `client.identity`. On the JavaScript and React Native clients it does not exist, so
-`e.identity === client.identity` is quietly false. Use your own user id, or `client.info?.identity`.
-
-### `connect()` takes no metadata
-
-The Kotlin guides pass a name to `connect()`. In JavaScript and React Native, call `client.setMetadata()` after joining. So `participantJoined` arrives with
-no name: wait for `participantUpdated` before showing "Asha joined". See [`chat.tsx`](../src/components/room/chat.tsx).
-
 ### Import values from the client package
 
 `RpcError`, `ChatClient` and `isTerminalError` come from `@voltkit-rtc/client`. Hooks and components come from `@voltkit-rtc/react-native`.
@@ -75,6 +65,7 @@ Use `useKeepAwake()` from `expo-keep-awake` in rooms and calls.
 
 | You see | Likely cause | Fix |
 | --- | --- | --- |
+| People hear their own voice back, with distortion | Someone's loudspeaker is reaching their own microphone. Two phones on the loudspeaker in one room echo even when both cancellers work | Test with the phones in different rooms, or one of them on earphones. From SDK 0.1.6 WebRTC's own canceller is used on Android, which this app keeps. `android.hardwareEchoCancellation: true` brings the phone's back |
 | `needs a development build` | Running in Expo Go, or not rebuilt after installing | `npx expo run:android` |
 | `UnsupportedError: device not supported` | The client loaded before the SDK | Import `@voltkit-rtc/react-native` first in your entry file |
 | The call drops about 6 seconds after leaving the app | The call service is not running | Check `useCallService()`, and keep the plugin's `android.callService` on |

@@ -175,7 +175,7 @@ export function HomeScreen() {
           <Image source={ART.mark} style={{ width: 32, height: 32 }} fadeDuration={0} />
           <Wordmark size={23} />
           <T variant="heading" style={{ color: colors.textDim }}>
-            Live
+            {VOLTKIT.appSuffix}
           </T>
         </View>
         <View style={{ flex: 1 }} />

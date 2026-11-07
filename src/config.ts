@@ -4,6 +4,9 @@ export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? 'http://10.0.2.2:4000
 export const assetUrl = (pathOrUrl: string) => (/^https?:\/\//.test(pathOrUrl) ? pathOrUrl : `${API_URL}${pathOrUrl}`);
 
 export const VOLTKIT = {
+  /** The app's name. Its Flutter twin is VoltKit Flutter. */
+  appName: 'VoltKit Native',
+  appSuffix: 'Native',
   site: 'https://voltkit.in',
   docs: 'https://voltkit.in/docs',
   rnPage: 'https://voltkit.in/rtc/react-native',

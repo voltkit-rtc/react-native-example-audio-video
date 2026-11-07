@@ -135,7 +135,7 @@ export async function goOnAir(local: LocalMedia) {
   } catch (err) {
     // A promotion can move this session to another media server. A publish cut off by that move
     // comes back by itself once the move is done.
-    if (err instanceof RpcError && (err.code === 'disconnected' || err.code === 'source-already-published')) return;
+    if (err instanceof RpcError && ['disconnected', 'not-connected', 'unpublished', 'source-already-published'].includes(err.code)) return;
     throw err;
   }
 }

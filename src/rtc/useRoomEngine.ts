@@ -93,8 +93,7 @@ export function useRoomEngine(room: Room, me: GuestPublic) {
 
   const roleOf = (identity: string) => participantsRef.current.find((p) => p.identity === identity)?.role;
 
-  // Seats and room settings: read once from the join result, then followed through events. It runs after every rejoin,
-  // which also puts the profile back: connect() takes no metadata in JS, so setMetadata is how names get out.
+  // Seats and room settings: read once from the join result, then followed through events. It runs after every rejoin.
   const seed = useCallback(() => {
     const joined = client?.info;
     if (!joined) return;
@@ -108,8 +107,7 @@ export function useRoomEngine(room: Room, me: GuestPublic) {
       seatModeRef.current = meta.seatMode;
       setSeatMode(meta.seatMode);
     }
-    client?.setMetadata({ name: me.name, avatar: me.avatar, frame: me.frame }).catch(() => {});
-  }, [client, me.name, me.avatar, me.frame]);
+  }, [client]);
 
   useVoltkitEvent('joined', seed);
   useEffect(() => {
@@ -124,7 +122,7 @@ export function useRoomEngine(room: Room, me: GuestPublic) {
       await localRef.current.publish(room.type === 'video' ? { quality: room.seats > 6 ? '480p' : '720p' } : { video: false });
     } catch (err) {
       // Cut off by the move to the publishing server: the SDK publishes again itself once it has moved.
-      if (err instanceof RpcError && (err.code === 'disconnected' || err.code === 'source-already-published')) return;
+      if (err instanceof RpcError && ['disconnected', 'not-connected', 'unpublished', 'source-already-published'].includes(err.code)) return;
       wantOnAir.current = false;
       const { text, openSettings } = mediaProblem(err);
       toast(text, 'error');

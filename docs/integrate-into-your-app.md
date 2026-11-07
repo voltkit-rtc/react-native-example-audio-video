@@ -271,25 +271,16 @@ These calls reject when a moderator holds that device off, with the code `force-
 
 ## 10. Show names and avatars
 
-Participants carry only what you put on them. Set it after joining.
+Participants carry only what you put on them. Pass it with the join.
 
 ```tsx
-import { useRoom } from '@voltkit-rtc/react-native';
-import { useEffect } from 'react';
-
-export function ShareProfile({ name, avatar }: { name: string; avatar: string }) {
-  const { client, state } = useRoom();
-  useEffect(() => {
-    if (state === 'connected') client?.setMetadata({ name, avatar }).catch(() => {});
-  }, [client, state, name, avatar]);
-  return null;
-}
+<VoltkitProvider wsUrl={wsUrl} token={token} metadata={{ name, avatar }}>
 ```
 
-Read it back from `useParticipants()`, as `participant.metadata`. Others hear it through `participantUpdated`.
+Read it back from `useParticipants()`, as `participant.metadata`. Others get it on `participantJoined`.
 
-**Why after joining:** `connect()` in the JavaScript and React Native SDKs takes no metadata. `state` returns to `connected` after every reconnect,
-so the profile is set again then too.
+**Why with the join:** everyone hears the name from the first event, and it stays through reconnects. To change it later, call `client.setMetadata()`, which
+others hear through `participantUpdated`.
 
 ## 11. Handle what goes wrong
 

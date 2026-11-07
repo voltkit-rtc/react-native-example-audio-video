@@ -44,7 +44,7 @@ export function OnboardingScreen() {
         <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 6 }}>
           <Wordmark size={34} />
           <T variant="title" style={{ color: colors.textDim }}>
-            Live
+            {VOLTKIT.appSuffix}
           </T>
         </View>
         <T variant="medium" style={{ color: colors.white, textAlign: 'center' }}>

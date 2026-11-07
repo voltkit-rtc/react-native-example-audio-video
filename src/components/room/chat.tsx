@@ -95,6 +95,8 @@ export const RoomChat = memo(function RoomChat({
   useEffect(() => {
     if (state !== 'connected' || !client || loaded.current) return;
     loaded.current = true;
+    // Whoever is already here has already arrived: someone reconnecting joins again.
+    for (const p of client.participants) greeted.current.add(p.identity);
     client
       .getMessages({ limit: 30 })
       .then((history) => {
@@ -111,13 +113,15 @@ export const RoomChat = memo(function RoomChat({
   });
   useVoltkitEvent('messageDeleted', ({ id }) => setLines((prev) => prev.filter((l) => l.id !== id)));
 
-  // A name only arrives with someone's metadata, just after they join.
-  useVoltkitEvent('participantUpdated', ({ identity, metadata }) => {
-    if (greeted.current.has(identity) || identity === selfId) return;
-    greeted.current.add(identity);
+  // A name comes with the join. A client that sets it afterwards sends it just after, as an update.
+  const greet = (identity: string, metadata: unknown) => {
     const name = (metadata as { name?: string } | undefined)?.name;
-    if (name) push({ id: `joined-${identity}-${Date.now()}`, kind: 'notice', text: `${name} joined` });
-  });
+    if (!name || identity === selfId || greeted.current.has(identity)) return;
+    greeted.current.add(identity);
+    push({ id: `joined-${identity}-${Date.now()}`, kind: 'notice', text: `${name} joined` });
+  };
+  useVoltkitEvent('participantJoined', ({ identity, metadata }) => greet(identity, metadata));
+  useVoltkitEvent('participantUpdated', ({ identity, metadata }) => greet(identity, metadata));
 
   return (
     <FlatList

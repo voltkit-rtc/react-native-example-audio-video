@@ -40,9 +40,8 @@ sequenceDiagram
   B->>V: createToken(roomId, identity, role)
   V-->>B: token, wsUrl
   B-->>A: token, wsUrl
-  A->>V: VoltkitProvider connects with the token
+  A->>V: VoltkitProvider connects with the token, and the name and avatar
   V-->>A: joined: participants, seats, tracks
-  A->>V: setMetadata(name, avatar)
   Note over A,V: Everything from here is between the app and VoltKit
 ```
 

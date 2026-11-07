@@ -22,6 +22,7 @@ import { ApiError, api } from '../api/client';
 import { getSocket, useSocketEvent } from '../api/socket';
 import { ReportSheet } from '../components/room/sheets';
 import { Avatar, GhostButton, GradientButton, IconButton, PoweredBy, Sheet, SheetRow, T } from '../components/ui';
+import { VOLTKIT } from '../config';
 import { clock } from '../lib/format';
 import { useKeyboardHeight } from '../lib/keyboard';
 import { toast } from '../lib/toast';
@@ -131,7 +132,7 @@ function CallView({
     if (state !== 'connected' || published.current) return;
     published.current = true;
     local.publish({ quality: '720p' }).catch((err) => {
-      if (err instanceof RpcError && err.code === 'source-already-published') return;
+      if (err instanceof RpcError && ['not-connected', 'unpublished', 'source-already-published'].includes(err.code)) return;
       toast(mediaProblem(err).text, 'error');
     });
   }, [state, local]);
@@ -342,7 +343,7 @@ export function MatchScreen({ navigation }: Screen<'Match'>) {
     navigation.goBack();
   }, [hangUp, navigation]);
 
-  const service = useMemo(() => ({ title: 'VoltKit Live call', text: 'Tap to return to the call', leaveLabel: 'End call' }), []);
+  const service = useMemo(() => ({ title: `${VOLTKIT.appName} call`, text: 'Tap to return to the call', leaveLabel: 'End call' }), []);
 
   if (call) {
     return (

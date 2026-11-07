@@ -4,7 +4,7 @@ const cleartextHosts = api.protocol === 'http:' ? [api.hostname] : [];
 
 module.exports = {
   expo: {
-    name: 'VoltKit Live',
+    name: 'VoltKit Native',
     slug: 'voltkit-live-demo',
     version: '1.0.0',
     orientation: 'portrait',

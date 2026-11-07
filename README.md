@@ -1,8 +1,10 @@
-# VoltKit RTC: React Native example
+# VoltKit Native
 
 A complete live social app built on [VoltKit RTC](https://voltkit.in/rtc/react-native), written to be read. It has video rooms,
 audio rooms with seats, random 1v1 video calls, room chat, direct messages, moderation and SVGA gifts, all on
 `@voltkit-rtc/react-native`.
+
+The same app is also written in Flutter: [flutter-demo-app](https://github.com/voltkit-rtc/flutter-demo-app). Both run on one backend and can share a room.
 
 Use it two ways: run it to see what VoltKit does, or open the file for the feature you need and copy the approach into your own app.
 
@@ -107,8 +109,9 @@ docs/                 The guides linked above
 
 | | Version |
 | --- | --- |
-| `@voltkit-rtc/react-native`, `@voltkit-rtc/react` | 0.1.4 |
-| `@voltkit-rtc/client` | 0.9.16 |
+| `@voltkit-rtc/react-native` | 0.1.6 |
+| `@voltkit-rtc/react` | 0.1.5 |
+| `@voltkit-rtc/client` | 0.9.17 |
 | `react-native-webrtc` | 155.0.1 |
 | React Native | 0.88.1, New Architecture, Hermes |
 | Expo | SDK 58 |
